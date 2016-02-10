@@ -1,14 +1,14 @@
 var fs = require('fs')
+var path = require('path')
 var controllers = {},
-	files = fs.readdirSync(__dirname),
-	name,
-	ext
+	files = fs.readdirSync(__dirname)
 
 files.forEach(function(file){
-	ext = file.substr(file.length-2, file.length)
-	name = file.substr(0, file.length-3)
+	var data = path.parse(file)
+	var ext = data.ext
+	var name = data.name
 
-	if(ext=='js'&&name!='index'){
+	if(ext=='.js'&&name!='index'){
 		controllers[name] = require('./'+file)
 	}
 })

@@ -8,7 +8,10 @@ config = require('./app/config')
 mongoose.connect(config.db, function(err){
 	if(err) console.log('DB Error')
 })
-
+//sessions
+//mw sess ws
+//autoload helpers, libraries, models, services
+//env vars
 app = express()
 
 app.use(bodyParser.json())
