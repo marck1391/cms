@@ -1,28 +1,23 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
-var mongoose = require('mongoose')
 
 config = require('./app/config')
+session = require('./app/services/session');
 
-mongoose.connect(config.db, function(err){
-	if(err) console.log('DB Error')
-})
-//sessions
-//mw sess ws
 //autoload helpers, libraries, models, services
 //env vars
 app = express()
-
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.set('view engine', 'ejs')
-app.set('views', __dirname + '/app/views')
-app.use('/assets', express.static(__dirname + '/app/assets'));
+app.use(cookieParser(config.session.secret))
+app.use(session());
+app.set('view engine', config.views.engine)
+app.set('views', config.views.path)
+app.use(config.server.public_route, express.static(config.server.public_path));
 
-var server = app.listen(config.port, function(){
+server = app.listen(config.server.port, function(){
 	console.log('Server started')
 });
-
+require('./app/services/ws')
 require('./app/main')
