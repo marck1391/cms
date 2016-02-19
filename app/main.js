@@ -21,11 +21,10 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
 	res.status(err.status || 500)
-	res.send({
-		error: true,
+	res.render ('errors/default', {
 		status: err.status,
-		name: err.name,
+		title: err.name,
 		message: err.message,
-		stack: err.stack,
+		stack: err.stack
 	})
 })
